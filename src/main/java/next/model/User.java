@@ -1,5 +1,7 @@
 package next.model;
 
+import core.db.DataBase;
+
 public class User {
 	private String userId;
 	private String password;
@@ -28,7 +30,25 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
-
+	
+	public void update(User updateUser) {
+		this.password = updateUser.password;
+		this.name = updateUser.name;
+		this.email = updateUser.email;
+	}
+	
+	public static User login(String userId, String password) {
+		User user = DataBase.findUserById(userId);
+		if (user == null || !user.isMatchedPassword(password)) {
+			return null;
+		}
+		return user;
+	}
+	
+	private boolean isMatchedPassword(String password) {
+		return this.password.equals(password);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -65,6 +85,10 @@ public class User {
 			return false;
 		return true;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", password=" + password + ", name=" + name + ", email=" + email + "]";
+	}
+
 }
