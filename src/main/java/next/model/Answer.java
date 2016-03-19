@@ -1,15 +1,13 @@
 package next.model;
 
-import java.util.Date;
-
 public class Answer {
 	private int answerId; 			
 	private String writer;			
 	private String contents;			
-	private Date createdDate;			
+	private String createdDate;			
 	private int questionId;
 
-	public Answer(int answerId, String writer, String contents, Date createdDate, int questionId) {
+	public Answer(int answerId, String writer, String contents, String createdDate, int questionId) {
 		this.answerId = answerId;
 		this.writer = writer;
 		this.contents = contents;
@@ -17,7 +15,7 @@ public class Answer {
 		this.questionId = questionId;
 	}
 
-	public Answer(String writer, String contents, Date createdDate, int questionId) {
+	public Answer(String writer, String contents, String createdDate, int questionId) {
 		this(0, writer, contents, createdDate, questionId);
 	}
 
@@ -33,7 +31,7 @@ public class Answer {
 		return contents;
 	}
 
-	public Date getCreatedDate() {
+	public String getCreatedDate() {
 		return createdDate;
 	}
 

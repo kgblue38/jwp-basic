@@ -1,16 +1,14 @@
 package next.model;
 
-import java.util.Date;
-
 public class Question {
 	private int questionId;
 	private String writer;
 	private String title;
 	private String contents;
-	private Date createdDate;
+	private String createdDate;
 	private int countOfAnswer;
 	
-	public Question(int questionId, String writer, String title, String contents, Date createdDate, int countOfAnswer) {
+	public Question(int questionId, String writer, String title, String contents, String createdDate, int countOfAnswer) {
 		this.questionId = questionId;
 		this.writer = writer;
 		this.title = title;
@@ -19,7 +17,7 @@ public class Question {
 		this.countOfAnswer = countOfAnswer;
 	}
 	
-	public Question(String writer, String title, String contents, Date createdDate, int countOfAnswer) {
+	public Question(String writer, String title, String contents, String createdDate, int countOfAnswer) {
 		this(0, writer, title, contents, createdDate, countOfAnswer);
 	}
 	
@@ -39,7 +37,7 @@ public class Question {
 		return contents;
 	}
 
-	public Date getcreatedDate() {
+	public String getcreatedDate() {
 		return createdDate;
 	}
 

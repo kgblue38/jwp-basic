@@ -2,6 +2,7 @@ package next.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -24,11 +25,9 @@ public class QuestionDao {
 		RowMapper<Question> rm = new RowMapper<Question>() {
 			@Override
 			public Question mapRow(ResultSet rs) throws SQLException {
-				return new Question(rs.getInt("questionId"), 
-						rs.getString("writer"), 
-						rs.getString("title"),
-						rs.getString("contents"), 
-						new Date(rs.getTimestamp("createdDate").getTime()),
+				return new Question(rs.getInt("questionId"), rs.getString("writer"),
+						rs.getString("title"), rs.getString("contents"), new SimpleDateFormat("yyyy-MM-dd HH:mm")
+								.format(new Date(rs.getTimestamp("createdDate").getTime())),
 						rs.getInt("countOfAnswer"));
 			}
 		};
@@ -42,8 +41,9 @@ public class QuestionDao {
 		RowMapper<Question> rm = new RowMapper<Question>() {
 			@Override
 			public Question mapRow(ResultSet rs) throws SQLException {
-				return new Question(rs.getInt("questionId"), rs.getString("writer"), rs.getString("title"),
-						rs.getString("contents"), new Date(rs.getTimestamp("createdDate").getTime()),
+				return new Question(rs.getInt("questionId"), rs.getString("writer"),
+						rs.getString("title"), rs.getString("contents"), new SimpleDateFormat("yyyy-MM-dd HH:mm")
+								.format(new Date(rs.getTimestamp("createdDate").getTime())),
 						rs.getInt("countOfAnswer"));
 			}
 		};
