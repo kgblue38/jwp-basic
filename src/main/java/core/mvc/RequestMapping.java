@@ -6,12 +6,15 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import next.controller.AnswerFormController;
 import next.controller.CreateUserController;
 import next.controller.HomeController;
 import next.controller.ListUserController;
 import next.controller.LoginController;
 import next.controller.LogoutController;
 import next.controller.ProfileController;
+import next.controller.QuestionController;
+import next.controller.QuestionFormController;
 import next.controller.UpdateFormUserController;
 import next.controller.UpdateUserController;
 
@@ -30,7 +33,10 @@ public class RequestMapping {
 	    mappings.put("/users/create", new CreateUserController());
 	    mappings.put("/users/updateForm", new UpdateFormUserController());
 	    mappings.put("/users/update", new UpdateUserController());
-
+	    mappings.put("/qna/questionForm", new QuestionFormController());
+	    mappings.put("/qna/question", new QuestionController());
+	    mappings.put("/qna/answerForm", new AnswerFormController());
+//	    mappings.put("/qna/answer", new ForwardController("/qna/show.jsp"));
 		logger.info("Initialized Request Mapping!");
 	}
 	
