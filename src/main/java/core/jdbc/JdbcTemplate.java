@@ -30,6 +30,7 @@ public class JdbcTemplate {
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				holder.setId(rs.getLong(1));
+				System.out.println(holder.getId());
 			}
 			rs.close();
 		}  catch (SQLException e) {

@@ -10,4 +10,11 @@ public class KeyHolder {
 	public long getId() {
 		return id;
 	}
+	
+//	public boolean querySuccess() {
+//		if (id == 0) {
+//			return false;
+//		}
+//		return true;
+//	}
 }

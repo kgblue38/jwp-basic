@@ -3,10 +3,14 @@ package core.mvc;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.annotation.WebServlet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import next.controller.HomeController;
+import next.controller.qna.AnswerApiController;
+import next.controller.qna.DeleteAnswerApiController;
 import next.controller.qna.ShowController;
 import next.controller.user.CreateUserController;
 import next.controller.user.ListUserController;
@@ -32,6 +36,8 @@ public class RequestMapping {
 	    mappings.put("/users/updateForm", new UpdateFormUserController());
 	    mappings.put("/users/update", new UpdateUserController());
 	    mappings.put("/qna/show", new ShowController());
+	    mappings.put("/api/qna/addanswer", new AnswerApiController());
+	    mappings.put("/api/qna/deleteAnswer", new DeleteAnswerApiController());
 
 		logger.info("Initialized Request Mapping!");
 	}

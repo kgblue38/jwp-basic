@@ -8,16 +8,18 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import next.model.Answer;
+import next.model.Result;
+import core.jdbc.DataAccessException;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.KeyHolder;
 import core.jdbc.PreparedStatementCreator;
 import core.jdbc.RowMapper;
 
 public class AnswerDao {
-    public Answer insert(Answer answer) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
-        PreparedStatementCreator psc = new PreparedStatementCreator() {
+	public Answer insert(Answer answer) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
+		PreparedStatementCreator psc = new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement pstmt = con.prepareStatement(sql);
@@ -28,40 +30,60 @@ public class AnswerDao {
 				return pstmt;
 			}
 		};
-        
+
 		KeyHolder keyHolder = new KeyHolder();
-        jdbcTemplate.update(psc, keyHolder);
-        return findById(keyHolder.getId());
-    }
+		jdbcTemplate.update(psc, keyHolder);
+		return findById(keyHolder.getId());
+	}
 
-    public Answer findById(long answerId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        String sql = "SELECT answerId, writer, contents, createdDate, questionId FROM ANSWERS WHERE answerId = ?";
+	public Result deleteById(String answerId) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
+		PreparedStatementCreator psc = new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql);
+				pstmt.setLong(1, Long.parseLong(answerId));
+				return pstmt;
+			}
+		};
+		KeyHolder keyHolder = new KeyHolder();
+		try {
+			jdbcTemplate.update(psc, keyHolder);
+		} catch (DataAccessException e) {
+			return Result.fail("error message");
+		}
+		return Result.ok();
+	}
 
-        RowMapper<Answer> rm = new RowMapper<Answer>() {
-            @Override
-            public Answer mapRow(ResultSet rs) throws SQLException {
-                return new Answer(rs.getLong("answerId"), rs.getString("writer"), rs.getString("contents"),
-                        rs.getTimestamp("createdDate"), rs.getLong("questionId"));
-            }
-        };
+	public Answer findById(long answerId) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		String sql = "SELECT answerId, writer, contents, createdDate, questionId FROM ANSWERS WHERE answerId = ?";
 
-        return jdbcTemplate.queryForObject(sql, rm, answerId);
-    }
+		RowMapper<Answer> rm = new RowMapper<Answer>() {
+			@Override
+			public Answer mapRow(ResultSet rs) throws SQLException {
+				return new Answer(rs.getLong("answerId"), rs.getString("writer"), rs.getString("contents"),
+						rs.getTimestamp("createdDate"), rs.getLong("questionId"));
+			}
+		};
 
-    public List<Answer> findAllByQuestionId(long questionId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        String sql = "SELECT answerId, writer, contents, createdDate FROM ANSWERS WHERE questionId = ? "
-                + "order by answerId desc";
+		return jdbcTemplate.queryForObject(sql, rm, answerId);
+	}
 
-        RowMapper<Answer> rm = new RowMapper<Answer>() {
-            @Override
-            public Answer mapRow(ResultSet rs) throws SQLException {
-                return new Answer(rs.getLong("answerId"), rs.getString("writer"), rs.getString("contents"),
-                        rs.getTimestamp("createdDate"), questionId);
-            }
-        };
+	public List<Answer> findAllByQuestionId(long questionId) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		String sql = "SELECT answerId, writer, contents, createdDate FROM ANSWERS WHERE questionId = ? "
+				+ "order by answerId desc";
 
-        return jdbcTemplate.query(sql, rm, questionId);
-    }
+		RowMapper<Answer> rm = new RowMapper<Answer>() {
+			@Override
+			public Answer mapRow(ResultSet rs) throws SQLException {
+				return new Answer(rs.getLong("answerId"), rs.getString("writer"), rs.getString("contents"),
+						rs.getTimestamp("createdDate"), questionId);
+			}
+		};
+
+		return jdbcTemplate.query(sql, rm, questionId);
+	}
 }
