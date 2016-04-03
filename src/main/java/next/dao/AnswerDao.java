@@ -15,7 +15,7 @@ import core.jdbc.RowMapper;
 
 public class AnswerDao {
     public Answer insert(Answer answer) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
         String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
         PreparedStatementCreator psc = new PreparedStatementCreator() {
 			@Override
@@ -35,7 +35,7 @@ public class AnswerDao {
     }
 
     public Answer findById(long answerId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
         String sql = "SELECT answerId, writer, contents, createdDate, questionId FROM ANSWERS WHERE answerId = ?";
 
         RowMapper<Answer> rm = new RowMapper<Answer>() {
@@ -50,7 +50,7 @@ public class AnswerDao {
     }
 
     public List<Answer> findAllByQuestionId(long questionId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
         String sql = "SELECT answerId, writer, contents, createdDate FROM ANSWERS WHERE questionId = ? "
                 + "order by answerId desc";
 
@@ -64,10 +64,30 @@ public class AnswerDao {
 
         return jdbcTemplate.query(sql, rm, questionId);
     }
+    
+    public int findNumOfAnswerByQuestionId(Long questionId) {
+    	JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+    	String sql = "SELECT COUNT(*) FROM ANSWERS WHERE questionId = ?";
+    	
+    	RowMapper<Integer> rm = new RowMapper<Integer>() {
+			@Override
+			public Integer mapRow(ResultSet rs) throws SQLException {
+				return rs.getInt(1);
+			}
+		};
+		
+		return jdbcTemplate.queryForObject(sql, rm, questionId);
+    }
 
 	public void delete(Long answerId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate();
+		JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
         String sql = "DELETE FROM ANSWERS WHERE answerId = ?";
         jdbcTemplate.update(sql, answerId);
+	}
+	
+	public void deleteByQuestionId(Long questionId) {
+		JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+        String sql = "DELETE FROM ANSWERS WHERE questionId = ?";
+        jdbcTemplate.update(sql, questionId);
 	}
 }

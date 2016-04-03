@@ -5,12 +5,12 @@
 		<layout class="ch.qos.logback.classic.PatternLayout">
 			<Pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] [%logger{36}] - %m%n</Pattern>
 		</layout>
+		<!-- 여기서 모든 서버의 로그들을 하나로 모으는 기능도 활용가능 -->
 	</appender>
 	
 	<logger name="core" level="DEBUG" />
-	
 	<logger name="next" level="DEBUG" />
-
+	<!-- 패키지별로 예외 로깅 메시지 레벨 지정  -->
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>
